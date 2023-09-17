@@ -13,7 +13,7 @@ type PageData struct {
 
 func RenderTemplate(movies []string) string {
 	// Load the template file
-	tmpl, err := template.ParseFiles("example.tmpl")
+	htmlFile, err := template.ParseFiles("example.html")
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +28,7 @@ func RenderTemplate(movies []string) string {
 	var buf bytes.Buffer
 
 	// Render the template with the data
-	err = tmpl.Execute(&buf, data)
+	err = htmlFile.Execute(&buf, data)
 	if err != nil {
 		panic(err)
 	}
