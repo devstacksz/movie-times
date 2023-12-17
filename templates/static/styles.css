@@ -6,18 +6,30 @@ body,
     background-color: black;
 }
 
-.movies {
-    display: flex;
-    flex-wrap: wrap;
+.container {
+    padding: 1rem;
 }
 
-.movie {
-    flex-basis: 20%;
-    margin: 1rem;
+.title {
+    color: white
 }
 
-/* .movie img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-} */
+.icon-title>h1 {
+    margin-left: 0.5rem;
+    display: inline-block;
+}
+
+.movie-title {
+    color: black;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out;
+    border: black;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    text-decoration: none;
+    border: black;
+}
