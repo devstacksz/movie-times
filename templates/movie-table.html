@@ -4,23 +4,25 @@
 <head>
     <title>Movies</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script src="/static/script.js"></script>
 </head>
 
 <body>
-    <div class="movies">
+    <div class="container movies">
         {{range .}}
-        <div class="movie">
-            <a href="#">
+        <div class="card movie">
+            <div class="card-image">
                 <img src="https://image.tmdb.org/t/p/w500{{.PosterPath}}" />
-                <div class="movie-info">
-                    <p>{{.Title}}</p>
-                    <p>{{.Date | formatYear}}</p>
-                </div>
-            </a>
+            </div>
+
+            <div class="card-content">
+                <p>{{.Title}}</p>
+                <p>{{.Date | formatYear}}</p>
+            </div>
         </div>
         {{end}}
+    </div>
     </div>
 </body>
 
