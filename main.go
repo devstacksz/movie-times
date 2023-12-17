@@ -2,28 +2,65 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"text/template"
+	"time"
+
+	"github.com/gocolly/colly"
+	"github.com/joho/godotenv"
 )
 
-func main() {
-	movies := getPopularMovies()
-	fmt.Println("Movies:", movies)
-
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	fmt.Fprint(w, render.RenderTemplate(movies))
-	// })
-
-	// http.HandleFunc("/styles.css", func(w http.ResponseWriter, r *http.Request) {
-	// 	dat, err := os.ReadFile("styles.css")
-	// 	check(err)
-	// 	w.Header().Set("Content-Type", "text/css")
-	// 	fmt.Fprint(w, string(dat))
-	// })
-
-	// fmt.Println("Server running on http://localhost:8080")
-	// http.ListenAndServe(":8080", nil)
+type Movie struct {
+	Title       string
+	Date        time.Time
+	Description string
+	PosterPath  string
 }
 
-// TODO: Make the scrape package be importable
+func formatYear(t time.Time) string {
+	return t.Format("January 2, 2006")
+}
+func main() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
 
-// TODO: Make a commit and does not use channels
-// TODO: Figure out how to listen to the channel for movies
+	limit := 25
+	movieChan := make(chan Movie, limit)
+	movies := make([]Movie, limit)
+	c := colly.NewCollector()
+
+	go getPopularMovies(c, movieChan)
+	c.Wait()
+
+	for count := 0; count < limit; count++ {
+		movies[count] = <-movieChan
+	}
+
+	// Serve static files from the "static" directory
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./templates/static"))))
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
+		t := template.New("movie-table.html").Funcs(template.FuncMap{
+			"formatYear": formatYear,
+		})
+
+		tmpl, err := t.ParseFiles("./templates/movie-table.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = tmpl.Execute(w, movies)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
+
+	http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("Error starting server:", err)
+	}
+}

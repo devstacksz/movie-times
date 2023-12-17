@@ -1,0 +1,33 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+
+.movies {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: black;
+}
+
+.movie {
+    flex-basis: 20%;
+    box-sizing: border-box;
+    padding: 1rem;
+    text-align: center;
+}
+
+.movie img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+}
+
+.movie-info>p {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Movies</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="/static/script.js"></script>
+</head>
+
+<body>
+    <div class="movies">
+        {{range .}}
+        <div class="movie">
+            <a href="#">
+                <img src="https://image.tmdb.org/t/p/w500{{.PosterPath}}" />
+                <div class="movie-info">
+                    <p>{{.Title}}</p>
+                    <p>{{.Date | formatYear}}</p>
+                </div>
+            </a>
+        </div>
+        {{end}}
+    </div>
+</body>
+
+</html>
