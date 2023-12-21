@@ -20,6 +20,7 @@ type Movie struct {
 func formatYear(t time.Time) string {
 	return t.Format("January 2, 2006")
 }
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
