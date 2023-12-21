@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"text/template"
 	"time"
 
@@ -31,6 +32,9 @@ func main() {
 	movieChan := make(chan Movie, limit)
 	movies := make([]Movie, limit)
 	c := colly.NewCollector()
+
+	landmarkUrl := getLandmarkUrl(os.Getenv("LANDMARK_LOCATION"))
+	fmt.Println(landmarkUrl)
 
 	go getPopularMovies(c, movieChan)
 	c.Wait()

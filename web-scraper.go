@@ -14,6 +14,15 @@ import (
 
 const rtUrl = "https://www.rottentomatoes.com/browse/movies_in_theaters/sort:popular"
 
+func getLandmarkUrl(location string) string {
+	urlParts := []string{"https://www.landmarkcinemas.com/showtimes/", location, "/"}
+	return strings.Join(urlParts, "")
+}
+
+func getLandmarkShowtimes(c *colly.Collector) {
+	// TODO: Implement
+}
+
 func getPopularMovies(c *colly.Collector, movieChan chan Movie) {
 	tmdbClient, err := tmdb.Init(os.Getenv("TMDB_KEY"))
 	if err != nil {
@@ -27,6 +36,7 @@ func getPopularMovies(c *colly.Collector, movieChan chan Movie) {
 
 			e.DOM.Find("span.p--small + span").Each(func(index int, item *goquery.Selection) {
 				stringDate := strings.TrimPrefix(strings.TrimSpace(item.Text()), "Opened ")
+				stringDate = strings.TrimPrefix(stringDate, "Opens ")
 
 				date, err := time.Parse("Jan 2, 2006", stringDate)
 				if err != nil {
